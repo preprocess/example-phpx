@@ -1,0 +1,74 @@
+<?php
+
+use App\Component\AddTask;
+use App\Component\Page;
+use App\Component\TaskList;
+use Silex\Application;
+use Silex\Provider\SessionServiceProvider;
+use Symfony\Component\HttpFoundation\Request;
+
+$app = new Application();
+$app->register(new SessionServiceProvider());
+$app["debug"] = true;
+
+$app->get("/", (Request $request) => {
+    $session = $request->getSession();
+
+    $tasks = $session->get("tasks");
+
+    if (!$tasks) {
+        $tasks = [];
+    }
+
+    return (
+        <Page>
+            <TaskList>{$tasks}</TaskList>
+            <AddTask></AddTask>
+        </Page>
+    );
+});
+
+$app->post("/add", (Request $request) => {
+    $session = $request->getSession();
+
+    $id = $session->get("id");
+    $tasks = $session->get("tasks");
+
+    if (!$id) {
+        $id = 0;
+    }
+
+    if (!$tasks) {
+        $tasks = [];
+    }
+
+    $tasks[] = [
+        "id" => $id++,
+        "text" => $request->get("text"),
+    ];
+
+    $session->set("id", $id);
+    $session->set("tasks", $tasks);
+
+    return $app->redirect("/");
+});
+
+$app->get("/remove/{id}", (Request $request, $id) => {
+    $session = $request->getSession();
+
+    $tasks = $session->get("tasks");
+
+    if (!$tasks) {
+        $tasks = [];
+    }
+
+    $tasks = array_filter($tasks, ($task) => {
+        return $task["id"] !== (int) $id;
+    });
+
+    $session->set("tasks", $tasks);
+
+    return $app->redirect("/");
+});
+
+$app->run();

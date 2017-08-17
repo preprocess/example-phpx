@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Component;
+
+use InvalidArgumentException;
+
+class AddTask
+{
+    public function render($props)
+    {
+        assert($this->hasValid($props));
+
+        return (
+            <form method={"post"} action={"/add"} className={"add-task"}>
+                <input name={"text"} type={"text"} />
+                <button type={"submit"}>add</button>
+            </form>
+        );
+    }
+
+    private function hasValid($props)
+    {
+        return true;
+    }
+}

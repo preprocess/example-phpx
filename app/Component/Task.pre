@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Component;
+
+use InvalidArgumentException;
+
+class Task
+{
+    public function render($props)
+    {
+        assert($this->hasValid($props));
+
+        { $children, $id } = $props;
+
+        return (
+            <li className={"task"}>
+                {$children}
+                <a href={"/remove/{$id}"}>remove</a>
+            </li>
+        );
+    }
+
+    private function hasValid($props)
+    {
+        if (!isset($props["id"])) {
+            throw new InvalidArgumentException("task needs id (attribute)");
+        }
+
+        if (empty($props["children"])) {
+            throw new InvalidArgumentException("task needs text (children)");
+        }
+
+        return true;
+    }
+}

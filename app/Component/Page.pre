@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Component;
+
+use InvalidArgumentException;
+
+class Page
+{
+    public function render($props)
+    {
+        assert($this->hasValid($props));
+
+        { $children } = $props;
+
+        return (
+            "<!doctype html>".
+            <html lang="en">
+                <body>
+                    {$children}
+                </body>
+            </html>
+        );
+    }
+
+    private function hasValid($props)
+    {
+        if (empty($props["children"])) {
+            throw new InvalidArgumentException("page needs content (children)");
+        }
+
+        return true;
+    }
+}

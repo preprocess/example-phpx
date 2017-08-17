@@ -1,0 +1,5 @@
+/app/**/*.php
+/pre.paths
+/pre.compilers
+/server.php
+/vendor

@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Component;
+
+use InvalidArgumentException;
+
+class TaskList
+{
+    public function render($props)
+    {
+        assert($this->hasValid($props));
+
+        { $children } = $props;
+
+        return (
+            <ul className={"task-list"}>
+                {$this->children($children)}
+            </ul>
+        );
+    }
+
+    private function hasValid($props)
+    {
+        return true;
+    }
+
+    private function children($children)
+    {
+        if (count($children)) {
+            return {$children}->map(($task) => {
+                return (
+                    <Task id={$task["id"]}>{$task["text"]}</Task>
+                );
+            });
+        }
+
+        return (
+            <span>No tasks</span>
+        );
+    }
+}
