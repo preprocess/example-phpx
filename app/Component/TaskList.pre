@@ -2,14 +2,10 @@
 
 namespace App\Component;
 
-use InvalidArgumentException;
-
 class TaskList
 {
     public function render($props)
     {
-        assert($this->hasValid($props));
-
         { $children } = $props;
 
         return (
@@ -17,11 +13,6 @@ class TaskList
                 {$this->children($children)}
             </ul>
         );
-    }
-
-    private function hasValid($props)
-    {
-        return true;
     }
 
     private function children($children)
